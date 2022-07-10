@@ -176,6 +176,10 @@ def admin_add_new_language(language_dict, prompt_dict, greeting_dict):
 def admin_update_greeting(key_to_change, greeting_dict, language_dict):
     greeting_dict[key_to_change] = input(f"\nPlease enter new greeting for {language_dict[key_to_change].upper()}\n")
 
+def admin_new_password_input(language_dict):
+    language_dict.pop(secret_code)
+    new_code = input("Please enter new admin code (for returning from user mode):\n")
+    return new_code
 
 # can use mode_input() here and verify when piecing it all together.
 # def admin_input_language_to_change(language_dict):
@@ -244,10 +248,14 @@ if __name__ == '__main__':
                 while input_check(lang_dict, key_to_change) is False:
                     print("Invalid selection. Try again.")
                     key_to_change = mode_input()
-                key_to_change = int(key_to_change)
-                admin_update_greeting(key_to_change, greetings_dict, lang_dict)
-                print("{:<20}: {}".format("Updated Language", lang_dict[key_to_change]))
-                print("{:<20}: {}\n".format("New Greeting", greetings_dict[key_to_change]))
+                if key_to_change == secret_code:
+                    secret_code = admin_new_password_input(lang_dict)
+                    lang_dict[secret_code] = ''
+                else:
+                    key_to_change = int(key_to_change)
+                    admin_update_greeting(key_to_change, greetings_dict, lang_dict)
+                    print("{:<20}: {}".format("Updated Language", lang_dict[key_to_change]))
+                    print("{:<20}: {}\n".format("New Greeting", greetings_dict[key_to_change]))
             elif int(action) == 3:
                 print("Returning to main menu.")
                 break
