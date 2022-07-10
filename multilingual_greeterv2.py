@@ -60,7 +60,7 @@ def language_choice_is_valid(lang_options: Dict[int, str], lang_choice: int) -> 
     :param lang_choice: An integer representing the value the user selected
     :return: A boolean representing the validity of the lang_choice
     """
-    return lang_choice in lang_options
+    return input_check(lang_options, lang_choice)
 
 
 def get_name_input(name_prompt_options: Dict[int, str], lang_choice: int) -> str:
@@ -111,17 +111,46 @@ def mode_input():
     return int(mode_choice)
 
 
-#  Can reuse language input check
-# def mode_input_check(mode_choice):
-#     return mode_choice in mode_dict
+def input_check(input_dict, input_value):
+    return input_value in input_dict
+
+
+def admin_lang_dict_print(language_dict):
+    print("Available languages\n")
+    for key in language_dict:
+        print("{}: {}".format(key, language_dict[key]))
+
+
+def admin_actions_print(options_dict):
+    print("\nPlease choose an option\n")
+    for key in admin_options_dict:
+        print("{}: {}".format(key, options_dict[key]))
+
+
+def admin_add_language(language_dict):
+    new_language = input("\nEnter name of language to add")
+    new_key = len(language_dict) + 1
+    language_dict[new_key] = new_language
+    return new_key
+
+
+def admin_add_name_prompt(ask_name_dict, key_to_add, language_dict):
+    new_name_prompt = input("\nPlease enter {} translation for: 'What is your name?'".format(language_dict[key_to_add]))
+    ask_name_dict[key_to_add] = new_name_prompt + " (What is your name?)"
+
 
 
 if __name__ == '__main__':
-    print_language_options(lang_dict)
-    chosen_lang = language_input()
-    while language_choice_is_valid(lang_dict, chosen_lang) is False:
-        print("Invalid selection. Try again.")
-        chosen_lang = language_input()
-    selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
-    chosen_name = name_input(selected_prompt)
-    greet(chosen_name, greetings_dict, chosen_lang)
+    # print_language_options(lang_dict)
+    # chosen_lang = language_input()
+    # while language_choice_is_valid(lang_dict, chosen_lang) is False:
+    #     print("Invalid selection. Try again.")
+    #     chosen_lang = language_input()
+    # selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
+    # chosen_name = name_input(selected_prompt)
+    # greet(chosen_name, greetings_dict, chosen_lang)
+    admin_lang_dict_print(lang_dict)
+    admin_actions_print(admin_options_dict)
+    # admin_add_language(lang_dict)
+    admin_add_name_prompt(name_prompt_dict, admin_add_language(lang_dict), lang_dict)
+    print(name_prompt_dict)
