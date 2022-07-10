@@ -3,8 +3,8 @@ from typing import Dict
 # Populate this dictionary with at least two languages.
 # Use integers for keys and strings for values.
 # Example: Key = 1. Value = 'English'.
-lang_dict = {1: 'English', 2: 'Spanish', 3: 'Japanese'
-}
+lang_dict = {1: 'English', 2: 'Spanish', 3: 'Japanese'}
+
 # Populate this dictionary with appropriate prompts that correspond with the ids from lang_dict.
 # Example: Key = 1. Value = 'What is your name?'.
 name_prompt_dict = {1: "What is your name?",
@@ -16,8 +16,13 @@ name_prompt_dict = {1: "What is your name?",
 # Example: Key = 1. Value = 'Hello'.
 greetings_dict = {1: "Hello",
                   2: "Hola",
-                  3: "こんにちは"
-}
+                  3: "こんにちは"}
+
+# Dictionary for program modes
+mode_dict = {1: "user", 2: "admin"}
+
+# Dictionary for optionals available in admin mode
+admin_options_dict = {1: "Add a language", 2: "Change a greeting"}
 
 
 def print_language_options(lang_options: Dict[int, str]) -> None:
@@ -43,6 +48,7 @@ def language_input() -> int:
     language_choice = input()
     return int(language_choice)
 
+
 def language_choice_is_valid(lang_options: Dict[int, str], lang_choice: int) -> bool:
     """
     This method determines if the choice the user made is valid.
@@ -56,6 +62,7 @@ def language_choice_is_valid(lang_options: Dict[int, str], lang_choice: int) -> 
     """
     return lang_choice in lang_options
 
+
 def get_name_input(name_prompt_options: Dict[int, str], lang_choice: int) -> str:
     """
     This method takes in a dictionary and a key. It returns the value in the dictionary that has a key corresponding to
@@ -68,6 +75,7 @@ def get_name_input(name_prompt_options: Dict[int, str], lang_choice: int) -> str
     """
     return name_prompt_options[lang_choice]
 
+
 def name_input(name_prompt: str) -> str:
     """
     This function takes in a string and uses it to prompt the user for their name.
@@ -77,6 +85,7 @@ def name_input(name_prompt: str) -> str:
     """
     name = input(name_prompt)
     return name
+
 
 def greet(name: str, greetings_options: Dict[int, str], lang_choice: int) -> None:
     """
@@ -90,13 +99,29 @@ def greet(name: str, greetings_options: Dict[int, str], lang_choice: int) -> Non
     """
     print(greetings_options[lang_choice] + " " + name)
 
+
+def mode_select_print(mode_options: Dict[int, str]):
+    print("Please select mode:")
+    for key in mode_options:
+        print("{}: {}".format(key, mode_options[key]))
+
+
+def mode_input():
+    mode_choice = input()
+    return int(mode_choice)
+
+
+#  Can reuse language input check
+# def mode_input_check(mode_choice):
+#     return mode_choice in mode_dict
+
+
 if __name__ == '__main__':
     print_language_options(lang_dict)
     chosen_lang = language_input()
     while language_choice_is_valid(lang_dict, chosen_lang) is False:
         print("Invalid selection. Try again.")
         chosen_lang = language_input()
-
     selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
     chosen_name = name_input(selected_prompt)
     greet(chosen_name, greetings_dict, chosen_lang)
