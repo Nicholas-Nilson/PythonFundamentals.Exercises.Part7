@@ -1,9 +1,15 @@
 from typing import Dict
 
+# this one might no longer pass the tests originally given, since
+# language check no longer returns an integer.
+# I wanted a branch to try adding secret options to the user menu, while still retaining all other functionality.
+# In this branch an admin can get back to the top menu without restarting the entire app.
+
+
 # Populate this dictionary with at least two languages.
 # Use integers for keys and strings for values.
 # Example: Key = 1. Value = 'English'.
-lang_dict = {1: 'English', 2: 'Spanish', 3: 'Japanese'}
+lang_dict = {1: 'English', 2: 'Spanish', 3: 'Japanese', 'Zip Code Rocks': ''}
 
 # Populate this dictionary with appropriate prompts that correspond with the ids from lang_dict.
 # Example: Key = 1. Value = 'What is your name?'.
@@ -35,7 +41,10 @@ def print_language_options(lang_options: Dict[int, str]) -> None:
     """
     print("Please choose a language: ")
     for key in lang_options:
-        print("{}: {}".format(key, lang_options[key]))
+        if key == 'Zip Code Rocks':
+            continue
+        else:
+            print("{}: {}".format(key, lang_options[key]))
 
 
 def language_input() -> int:
@@ -45,7 +54,7 @@ def language_input() -> int:
     :return: An integer representing the language choice made by the user
     """
     language_choice = input()
-    return int(language_choice)
+    return language_choice
 
 
 def language_choice_is_valid(lang_options: Dict[int, str], lang_choice: int) -> bool:
@@ -112,15 +121,20 @@ def mode_input():
 
 def input_check(input_dict, input_value):
     try:
-        return int(input_value) in input_dict
+        if input_value == 'Zip Code Rocks':
+            return input_value in input_dict
+        else:
+            return int(input_value) in input_dict
     except ValueError:
         return False
 
 
 def admin_lang_dict_print(language_dict):
     print("Available languages\n")
+    code = language_dict.pop('Zip Code Rocks')
     for key in language_dict:
         print("{}: {}".format(key, language_dict[key]))
+    language_dict['Zip Code Rocks'] = 'Sure Does'
 
 
 def admin_actions_print(options_dict):
@@ -147,7 +161,7 @@ def admin_add_greeting(key_to_add, language_dict):
 # this is doing too many things and could be spelled out in main, but it is working. hmmm.
 # could split into three adds for easier testing and just call the three in main.
 def admin_add_new_language(language_dict, prompt_dict, greeting_dict):
-    new_key = len(language_dict) + 1
+    new_key = len(language_dict)
     admin_lang_dict_print(language_dict)
     language_dict[new_key] = admin_add_language_to_dict()
     name_prompt_dict[new_key] = admin_add_name_prompt(new_key, language_dict)
@@ -160,7 +174,7 @@ def admin_add_new_language(language_dict, prompt_dict, greeting_dict):
 
 
 def admin_update_greeting(key_to_change, greeting_dict, language_dict):
-    greeting_dict[key_to_change] = input(f"\n Please enter new greeting for {language_dict[key_to_change]}\n")
+    greeting_dict[key_to_change] = input(f"\nPlease enter new greeting for {language_dict[key_to_change].upper()}\n")
 
 
 # can use mode_input() here and verify when piecing it all together.
@@ -204,6 +218,9 @@ if __name__ == '__main__':
             while language_choice_is_valid(lang_dict, chosen_lang) is False:
                 print("Invalid selection. Try again.")
                 chosen_lang = language_input()
+            if chosen_lang == 'Zip Code Rocks':
+                break
+            chosen_lang = int(chosen_lang)
             selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
             chosen_name = name_input(selected_prompt)
             greet(chosen_name, greetings_dict, chosen_lang)
@@ -217,7 +234,7 @@ if __name__ == '__main__':
                 action = mode_input()
             if int(action) == 1:
                 admin_add_new_language(lang_dict, name_prompt_dict, greetings_dict)
-                added_key = len(lang_dict)
+                added_key = len(lang_dict) - 1
                 print("{:<20} {}".format("Added Language:", lang_dict[added_key]))
                 print("{:<20} {}".format("Name Prompt:", name_prompt_dict[added_key]))
                 print("{:<20} {}\n".format("Greeting", greetings_dict[added_key]))
