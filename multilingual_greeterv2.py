@@ -22,7 +22,7 @@ greetings_dict = {1: "Hello",
 mode_dict = {1: "user", 2: "admin"}
 
 # Dictionary for optionals available in admin mode
-admin_options_dict = {1: "Add a language", 2: "Change a greeting"}
+admin_options_dict = {1: "Add a language", 2: "Change a greeting", 3: "Quit to main menu"}
 
 
 def print_language_options(lang_options: Dict[int, str]) -> None:
@@ -108,11 +108,14 @@ def mode_select_print(mode_options: Dict[int, str]):
 
 def mode_input():
     mode_choice = input()
-    return int(mode_choice)
+    return mode_choice
 
 
 def input_check(input_dict, input_value):
-    return input_value in input_dict
+    try:
+        return int(input_value) in input_dict
+    except ValueError:
+        return False
 
 
 def admin_lang_dict_print(language_dict):
@@ -127,17 +130,32 @@ def admin_actions_print(options_dict):
         print("{}: {}".format(key, options_dict[key]))
 
 
-def admin_add_language(language_dict):
-    new_language = input("\nEnter name of language to add")
-    new_key = len(language_dict) + 1
-    language_dict[new_key] = new_language
-    return new_key
+def admin_add_language_to_dict():
+    new_language = input("\nEnter name of language to add\n")
+    return new_language
 
 
-def admin_add_name_prompt(ask_name_dict, key_to_add, language_dict):
+def admin_add_name_prompt(key_to_add,  language_dict):
     new_name_prompt = input("\nPlease enter {} translation for: 'What is your name?'".format(language_dict[key_to_add]))
-    ask_name_dict[key_to_add] = new_name_prompt + " (What is your name?)"
+    return new_name_prompt
 
+
+def admin_add_greeting(key_to_add, language_dict):
+    new_greeting = input("\nPlease enter {} translation for: 'Hello'".format(language_dict[key_to_add]))
+    return new_greeting
+
+
+# this is doing too many things and could be spelled out in main
+def admin_add_new_language(language_dict, prompt_dict, greeting_dict):
+    new_key = len(language_dict) + 1
+    admin_lang_dict_print(language_dict)
+    language_dict[new_key] = admin_add_language_to_dict()
+    name_prompt_dict[new_key] = admin_add_name_prompt(new_key, language_dict)
+    greetings_dict[new_key] = admin_add_greeting(new_key, language_dict)
+
+
+# can use mode_input() here and verify when piecing it all together.
+# def admin_input_language_to_change(language_dict):
 
 
 if __name__ == '__main__':
@@ -149,8 +167,18 @@ if __name__ == '__main__':
     # selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
     # chosen_name = name_input(selected_prompt)
     # greet(chosen_name, greetings_dict, chosen_lang)
-    admin_lang_dict_print(lang_dict)
-    admin_actions_print(admin_options_dict)
-    # admin_add_language(lang_dict)
-    admin_add_name_prompt(name_prompt_dict, admin_add_language(lang_dict), lang_dict)
+
+    # admin_add_new_language(lang_dict)
+    # admin_add_greeting(admin_add_name_prompt(name_prompt_dict, admin_add_language_to_dict(lang_dict), lang_dict), greetings_dict, lang_dict)
+    # print(greetings_dict)
+
+    # mode_select_print(mode_dict)
+    # mode = mode_input()
+    # while language_choice_is_valid(mode_dict, mode) is False:
+    #     print("Invalid selection, please try again")
+    #     mode = mode_input()
+    #
+    admin_add_new_language(lang_dict, name_prompt_dict, greetings_dict)
+    print(lang_dict)
     print(name_prompt_dict)
+    print(greetings_dict)
