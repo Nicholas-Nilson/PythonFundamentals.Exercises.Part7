@@ -11,7 +11,6 @@ name_prompt_dict = {1: "What is your name?",
                     2: "¿Cuál es su nombre? (What is your name?)",
                     3: "o namae wa? (What is your name?)"}
 
-
 # Populate this dictionary with appropriate prompts that correspond with the ids from lang_dict.
 # Example: Key = 1. Value = 'Hello'.
 greetings_dict = {1: "Hello",
@@ -145,13 +144,23 @@ def admin_add_greeting(key_to_add, language_dict):
     return new_greeting
 
 
-# this is doing too many things and could be spelled out in main
+# this is doing too many things and could be spelled out in main, but it is working. hmmm.
+# could split into three adds for easier testing and just call the three in main.
 def admin_add_new_language(language_dict, prompt_dict, greeting_dict):
     new_key = len(language_dict) + 1
     admin_lang_dict_print(language_dict)
     language_dict[new_key] = admin_add_language_to_dict()
     name_prompt_dict[new_key] = admin_add_name_prompt(new_key, language_dict)
     greetings_dict[new_key] = admin_add_greeting(new_key, language_dict)
+
+
+#  -_-
+# def admin_update_prompt(key_to_change, prompt_dict, language_dict):
+#     prompt_dict[key_to_change] = input(f"\nPlease enter new prompt for {language_dict[key_to_change]}\n")
+
+
+def admin_update_greeting(key_to_change, greeting_dict, language_dict):
+    greeting_dict[key_to_change] = input(f"\n Please enter new greeting for {language_dict[key_to_change]}n")
 
 
 # can use mode_input() here and verify when piecing it all together.
@@ -178,7 +187,42 @@ if __name__ == '__main__':
     #     print("Invalid selection, please try again")
     #     mode = mode_input()
     #
-    admin_add_new_language(lang_dict, name_prompt_dict, greetings_dict)
-    print(lang_dict)
-    print(name_prompt_dict)
-    print(greetings_dict)
+    # admin_add_new_language(lang_dict, name_prompt_dict, greetings_dict)
+    # print(lang_dict)
+    # print(name_prompt_dict)
+    # print(greetings_dict)
+    on = True
+    while on:
+        mode_select_print(mode_dict)
+        mode = mode_input()
+        while input_check(mode_dict, mode) is False:
+            print("Invalid selection. Please choose from available options")
+            mode = mode_input()
+        while int(mode) == 1:
+            print_language_options(lang_dict)
+            chosen_lang = language_input()
+            while language_choice_is_valid(lang_dict, chosen_lang) is False:
+                print("Invalid selection. Try again.")
+                chosen_lang = language_input()
+            selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
+            chosen_name = name_input(selected_prompt)
+            greet(chosen_name, greetings_dict, chosen_lang)
+            print("\n")
+        while int(mode) == 2:
+            admin_lang_dict_print(lang_dict)
+            admin_actions_print(admin_options_dict)
+            action = mode_input()
+            while input_check(admin_options_dict, action) is False:
+                print("Invalid selection. Try again.")
+                action = mode_input()
+            if int(action) == 1:
+                admin_add_new_language(lang_dict, name_prompt_dict, greetings_dict)
+            elif int(action) == 2:
+                admin_lang_dict_print(lang_dict)
+                key_to_change = mode_input()
+                while input_check(lang_dict, key_to_change) is False:
+                    print("Invalid selection. Try again.")
+                    key_to_change = mode_input()
+                admin_update_greeting(key_to_change, greetings_dict, lang_dict)
+    # admin_update_prompt(1, name_prompt_dict, lang_dict)
+    # print(name_prompt_dict)
