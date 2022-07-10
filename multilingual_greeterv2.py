@@ -9,8 +9,7 @@ from typing import Dict
 # Populate this dictionary with at least two languages.
 # Use integers for keys and strings for values.
 # Example: Key = 1. Value = 'English'.
-secret_code = 'Poop Poop'
-lang_dict = {1: 'English', 2: 'Spanish', 3: 'Japanese', secret_code: ''}
+lang_dict = {1: 'English', 2: 'Spanish', 3: 'Japanese', 'Zip Code Rocks': ''}
 
 # Populate this dictionary with appropriate prompts that correspond with the ids from lang_dict.
 # Example: Key = 1. Value = 'What is your name?'.
@@ -42,13 +41,13 @@ def print_language_options(lang_options: Dict[int, str]) -> None:
     """
     print("Please choose a language: ")
     for key in lang_options:
-        if key == secret_code:
+        if key == 'Zip Code Rocks':
             continue
         else:
             print("{}: {}".format(key, lang_options[key]))
 
 
-def language_input():
+def language_input() -> int:
     """
     This function prompts the user for a language choice.
 
@@ -122,7 +121,7 @@ def mode_input():
 
 def input_check(input_dict, input_value):
     try:
-        if input_value == secret_code:
+        if input_value == 'Zip Code Rocks':
             return input_value in input_dict
         else:
             return int(input_value) in input_dict
@@ -132,10 +131,10 @@ def input_check(input_dict, input_value):
 
 def admin_lang_dict_print(language_dict):
     print("Available languages\n")
-    language_dict.pop(secret_code)
+    code = language_dict.pop('Zip Code Rocks')
     for key in language_dict:
         print("{}: {}".format(key, language_dict[key]))
-    language_dict[secret_code] = ''
+    language_dict['Zip Code Rocks'] = 'Sure Does'
 
 
 def admin_actions_print(options_dict):
@@ -165,8 +164,8 @@ def admin_add_new_language(language_dict, prompt_dict, greeting_dict):
     new_key = len(language_dict)
     admin_lang_dict_print(language_dict)
     language_dict[new_key] = admin_add_language_to_dict()
-    prompt_dict[new_key] = admin_add_name_prompt(new_key, language_dict)
-    greeting_dict[new_key] = admin_add_greeting(new_key, language_dict)
+    name_prompt_dict[new_key] = admin_add_name_prompt(new_key, language_dict)
+    greetings_dict[new_key] = admin_add_greeting(new_key, language_dict)
 
 
 #  -_-
@@ -219,7 +218,7 @@ if __name__ == '__main__':
             while language_choice_is_valid(lang_dict, chosen_lang) is False:
                 print("Invalid selection. Try again.")
                 chosen_lang = language_input()
-            if chosen_lang == secret_code:
+            if chosen_lang == 'Zip Code Rocks':
                 break
             chosen_lang = int(chosen_lang)
             selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
