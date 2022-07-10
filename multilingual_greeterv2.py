@@ -5,11 +5,11 @@ from typing import Dict
 # I wanted a branch to try adding secret options to the user menu, while still retaining all other functionality.
 # In this branch an admin can get back to the top menu without restarting the entire app.
 
-
+secret_code = 'Poop Poop'
 # Populate this dictionary with at least two languages.
 # Use integers for keys and strings for values.
 # Example: Key = 1. Value = 'English'.
-lang_dict = {1: 'English', 2: 'Spanish', 3: 'Japanese', 'Zip Code Rocks': ''}
+lang_dict = {1: 'English', 2: 'Spanish', 3: 'Japanese', secret_code: ''}
 
 # Populate this dictionary with appropriate prompts that correspond with the ids from lang_dict.
 # Example: Key = 1. Value = 'What is your name?'.
@@ -41,7 +41,7 @@ def print_language_options(lang_options: Dict[int, str]) -> None:
     """
     print("Please choose a language: ")
     for key in lang_options:
-        if key == 'Zip Code Rocks':
+        if key == secret_code:
             continue
         else:
             print("{}: {}".format(key, lang_options[key]))
@@ -121,7 +121,7 @@ def mode_input():
 
 def input_check(input_dict, input_value):
     try:
-        if input_value == 'Zip Code Rocks':
+        if input_value == secret_code:
             return input_value in input_dict
         else:
             return int(input_value) in input_dict
@@ -131,10 +131,10 @@ def input_check(input_dict, input_value):
 
 def admin_lang_dict_print(language_dict):
     print("Available languages\n")
-    code = language_dict.pop('Zip Code Rocks')
+    code = language_dict.pop(secret_code)
     for key in language_dict:
         print("{}: {}".format(key, language_dict[key]))
-    language_dict['Zip Code Rocks'] = 'Sure Does'
+    language_dict[secret_code] = ''
 
 
 def admin_actions_print(options_dict):
@@ -218,7 +218,7 @@ if __name__ == '__main__':
             while language_choice_is_valid(lang_dict, chosen_lang) is False:
                 print("Invalid selection. Try again.")
                 chosen_lang = language_input()
-            if chosen_lang == 'Zip Code Rocks':
+            if chosen_lang == secret_code:
                 break
             chosen_lang = int(chosen_lang)
             selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
