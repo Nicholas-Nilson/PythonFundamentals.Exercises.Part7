@@ -105,7 +105,7 @@ def greet(name: str, greetings_options: Dict[int, str], lang_choice: int) -> Non
     :param lang_choice: The language the user has chosen.
     :return:
     """
-    print(greetings_options[lang_choice] + " " + name)
+    print("\n" + greetings_options[lang_choice] + " " + name +"!")
 
 
 def mode_select_print(mode_options: Dict[int, str]):
