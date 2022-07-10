@@ -18,10 +18,10 @@ greetings_dict = {1: "Hello",
                   3: "こんにちは"}
 
 # Dictionary for program modes
-mode_dict = {1: "user", 2: "admin"}
+mode_dict = {1: "user", 2: "admin", 3: "turn off"}
 
 # Dictionary for optionals available in admin mode
-admin_options_dict = {1: "Add a language", 2: "Change a greeting", 3: "Quit to main menu"}
+admin_options_dict = {1: "Add a language", 2: "Change a greeting", 3: "Quit to main menu", 4: "Turn off"}
 
 
 def print_language_options(lang_options: Dict[int, str]) -> None:
@@ -106,7 +106,7 @@ def mode_select_print(mode_options: Dict[int, str]):
 
 
 def mode_input():
-    mode_choice = input()
+    mode_choice = input(">>")
     return mode_choice
 
 
@@ -160,7 +160,7 @@ def admin_add_new_language(language_dict, prompt_dict, greeting_dict):
 
 
 def admin_update_greeting(key_to_change, greeting_dict, language_dict):
-    greeting_dict[key_to_change] = input(f"\n Please enter new greeting for {language_dict[key_to_change]}n")
+    greeting_dict[key_to_change] = input(f"\n Please enter new greeting for {language_dict[key_to_change]}\n")
 
 
 # can use mode_input() here and verify when piecing it all together.
@@ -217,12 +217,30 @@ if __name__ == '__main__':
                 action = mode_input()
             if int(action) == 1:
                 admin_add_new_language(lang_dict, name_prompt_dict, greetings_dict)
+                added_key = len(lang_dict)
+                print("{:<20} {}".format("Added Language:", lang_dict[added_key]))
+                print("{:<20} {}".format("Name Prompt:", name_prompt_dict[added_key]))
+                print("{:<20} {}\n".format("Greeting", greetings_dict[added_key]))
             elif int(action) == 2:
                 admin_lang_dict_print(lang_dict)
                 key_to_change = mode_input()
                 while input_check(lang_dict, key_to_change) is False:
                     print("Invalid selection. Try again.")
                     key_to_change = mode_input()
+                key_to_change = int(key_to_change)
                 admin_update_greeting(key_to_change, greetings_dict, lang_dict)
+                print("{:<20}: {}".format("Updated Language", lang_dict[key_to_change]))
+                print("{:<20}: {}\n".format("New Greeting", greetings_dict[key_to_change]))
+            elif int(action) == 3:
+                print("Returning to main menu.")
+                break
+            elif int(action) == 4:
+                on = False
+                print("Goodbye")
+                break
+        if int(mode) == 3:
+            on = False
+            print("Goodbye")
+
     # admin_update_prompt(1, name_prompt_dict, lang_dict)
     # print(name_prompt_dict)
