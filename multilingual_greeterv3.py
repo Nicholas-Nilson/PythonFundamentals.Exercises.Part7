@@ -163,7 +163,7 @@ def admin_add_new_language(language_dict, prompt_dict, greeting_dict):
     admin_lang_dict_print(language_dict)
     language_dict[new_key] = admin_add_language_to_dict()
     name_prompt_dict[new_key] = admin_add_name_prompt(new_key, language_dict)
-    greetings_dict[new_key] = admin_add_greeting(new_key, language_dict)
+    greetings_dict[new_key] = admin_add_greeting_list(new_key, language_dict)
 
 
 #  -_-
