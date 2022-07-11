@@ -122,6 +122,12 @@ def input_check(input_dict, input_value):
     except ValueError:
         return False
 
+def input_check_num_only(input_value):
+    try:
+        if 0 < int(input_value) <= 3:
+            return int(input_value)
+    except ValueError:
+        return False
 
 def admin_lang_dict_print(language_dict):
     print("Available languages\n")
@@ -171,9 +177,17 @@ def admin_add_new_language(language_dict, prompt_dict, greeting_dict):
 #     prompt_dict[key_to_change] = input(f"\nPlease enter new prompt for {language_dict[key_to_change]}\n")
 
 
-def admin_update_greeting(key_to_change, greeting_dict, language_dict):
-    greeting_dict[key_to_change] = input(f"\n Please enter new greeting for {language_dict[key_to_change]}\n")
+def admin_update_greeting(key_to_change, index_to_change, greeting_dict, language_dict):
+    greeting_dict[key_to_change][index_to_change] = input(f"\n Please enter new greeting for {language_dict[key_to_change]}\n")
 
+
+def admin_display_greetings(key_to_change, greeting_dict, language_dict):
+    print(f"\nThese are the available greetings for {language_dict[key_to_change]}")
+    print("Please choose an option to change:\n")
+    index_count = 1
+    for greet_list in greeting_dict[key_to_change]:
+        print("{}:   {}".format(index_count, greet_list))
+        index_count += 1
 
 # can use mode_input() here and verify when piecing it all together.
 # def admin_input_language_to_change(language_dict):
@@ -227,9 +241,16 @@ if __name__ == '__main__':
                     print("Invalid selection. Try again.")
                     key_to_change = mode_input()
                 key_to_change = int(key_to_change)
-                admin_update_greeting(key_to_change, greetings_dict, lang_dict)
+                admin_display_greetings(key_to_change, greetings_dict, lang_dict)
+                index_to_change = mode_input()
+                while input_check_num_only(index_to_change) is False:
+                    print("Invalid selection. Try again.")
+                    index_to_change = mode_input()
+                index_to_change = int(index_to_change) -1
+                admin_update_greeting(key_to_change, index_to_change, greetings_dict, lang_dict)
+                # admin_update_greeting(key_to_change, greetings_dict, lang_dict)
                 print("{:<20}: {}".format("Updated Language", lang_dict[key_to_change]))
-                print("{:<20}: {}\n".format("New Greeting", greetings_dict[key_to_change]))
+                print("{:<20}: {}\n".format("Current Greetings", greetings_dict[key_to_change]))
             elif int(action) == 3:
                 print("Returning to main menu.")
                 break
@@ -240,4 +261,3 @@ if __name__ == '__main__':
         if int(mode) == 3:
             on = False
             print("Goodbye")
-
