@@ -1,3 +1,4 @@
+import random
 from typing import Dict
 
 # Populate this dictionary with at least two languages.
@@ -86,7 +87,7 @@ def name_input(name_prompt: str) -> str:
     return name
 
 
-def greet(name: str, greetings_options: Dict[int, str], lang_choice: int) -> None:
+def greet(name: str, greetings_options: Dict[int, str], lang_choice: int, greet_index) -> None:
     """
     Using the parameters provided, this function greets the user.
 
@@ -96,7 +97,12 @@ def greet(name: str, greetings_options: Dict[int, str], lang_choice: int) -> Non
     :param lang_choice: The language the user has chosen.
     :return:
     """
-    print(greetings_options[lang_choice] + " " + name)
+    print(greetings_options[lang_choice][greet_index] + " " + name)
+
+
+def greet_randomizer():
+    index_select = random.randint(1, 3)
+    return index_select
 
 
 def mode_select_print(mode_options: Dict[int, str]):
@@ -177,20 +183,6 @@ if __name__ == '__main__':
     # chosen_name = name_input(selected_prompt)
     # greet(chosen_name, greetings_dict, chosen_lang)
 
-    # admin_add_new_language(lang_dict)
-    # admin_add_greeting(admin_add_name_prompt(name_prompt_dict, admin_add_language_to_dict(lang_dict), lang_dict), greetings_dict, lang_dict)
-    # print(greetings_dict)
-
-    # mode_select_print(mode_dict)
-    # mode = mode_input()
-    # while language_choice_is_valid(mode_dict, mode) is False:
-    #     print("Invalid selection, please try again")
-    #     mode = mode_input()
-    #
-    # admin_add_new_language(lang_dict, name_prompt_dict, greetings_dict)
-    # print(lang_dict)
-    # print(name_prompt_dict)
-    # print(greetings_dict)
     on = True
     while on:
         mode_select_print(mode_dict)
@@ -206,7 +198,8 @@ if __name__ == '__main__':
                 chosen_lang = language_input()
             selected_prompt = f"{get_name_input(name_prompt_dict, chosen_lang)} \n"
             chosen_name = name_input(selected_prompt)
-            greet(chosen_name, greetings_dict, chosen_lang)
+            random_index = greet_randomizer() - 1
+            greet(chosen_name, greetings_dict, chosen_lang, random_index)
             print("\n")
         while int(mode) == 2:
             admin_lang_dict_print(lang_dict)
@@ -242,5 +235,3 @@ if __name__ == '__main__':
             on = False
             print("Goodbye")
 
-    # admin_update_prompt(1, name_prompt_dict, lang_dict)
-    # print(name_prompt_dict)
