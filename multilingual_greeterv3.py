@@ -14,9 +14,9 @@ name_prompt_dict = {1: "What is your name?",
 
 # Populate this dictionary with appropriate prompts that correspond with the ids from lang_dict.
 # Example: Key = 1. Value = 'Hello'.
-greetings_dict = {1: ("Hello", "Hi there", "Yoyo what's good?"),
-                  2: ("Hola", "Buenos dias", "Buenos noches"),
-                  3: ("こんにちは", "konbanwa", "moushi moushi")}
+greetings_dict = {1: ["Hello", "Hi there", "Yoyo what's good?"],
+                  2: ["Hola", "Buenos dias", "Buenos noches"],
+                  3: ["こんにちは", "こんばんは", "もしもし"]}
 
 # Dictionary for program modes
 mode_dict = {1: "user", 2: "admin", 3: "turn off"}
@@ -149,6 +149,12 @@ def admin_add_greeting(key_to_add, language_dict):
     new_greeting = input("\nPlease enter {} translation for: 'Hello'".format(language_dict[key_to_add]))
     return new_greeting
 
+
+def admin_add_greeting_list(key_to_add, language_dict):
+    greeting_list = []
+    for num in range(3):
+        greeting_list.append(admin_add_greeting(key_to_add, language_dict))
+    return greeting_list
 
 # this is doing too many things and could be spelled out in main, but it is working. hmmm.
 # could split into three adds for easier testing and just call the three in main.
